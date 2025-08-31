@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cake Cutting</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: url("book_cover.jpg");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* stack items vertically */
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* Dark overlay before light up */
+  #overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    flex-direction: column;
+  }
+
+  #lightBtn {
+    padding: 15px 35px;
+    background: gold;
+    color: #000;
+    border: none;
+    font-size: 1.3rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 0 20px gold;
+    transition: transform 0.2s;
+  }
+  #lightBtn:hover {
+    transform: scale(1.1);
+  }
+
+  /* Decorations */
+  .fairy-lights {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    z-index: 1;
+  }
+  .fairy-lights span {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: yellow;
+    box-shadow: 0 0 15px yellow;
+    animation: twinkle 1.5s infinite alternate;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.2; transform: scale(0.8);}
+    to { opacity: 1; transform: scale(1.2);}
+  }
+
+  /* Cake */
+  .cake {
+  position: relative;
+  width: 200px;
+  height: 120px;
+  background: linear-gradient(to bottom, #5c3317 0%, #3e1f0d 100%);
+  
+  border-radius: 15px;
+  box-shadow: 
+    inset 0 4px 10px rgba(255, 255, 255, 0.2), /* glossy top */
+    inset 0 -6px 12px rgba(0, 0, 0, 0.4),     /* depth */
+    0 8px 20px rgba(0, 0, 0, 0.4); 
+  
+  display: none;
+  z-index: 2;
+  cursor: pointer;
+  margin-top: 0 auto;
+}
+
+
+
+
+/* Icing */
+.cake::before {
+  content: "";
+  position: absolute;
+  top: -20px;   /* smaller icing */
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(to bottom, #d2691e 0%, #8b4513 100%);
+  border-radius: 50% 50% 0 0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  z-index: 1;  /* stays behind */
+}
+
+.cake::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10px;
+  width: 90%;
+  height: 20px;
+  background: radial-gradient(circle at 10% 0, #8b4513 40%, transparent 70%);
+  background-size: 30px 20px;
+  background-repeat: repeat-x;
+  z-index: 1; /* behind */
+}
+
+/* Candle */
+/* Candle */
+.candle {
+  position: relative;
+ 
+  top: -60px;   /* Move candle above the cake */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 60px;
+  background: repeating-linear-gradient(
+    45deg,
+    #fff 0 10px,
+    #ff0000 10px 20px
+  );
+  border-radius: 3px;
+   /* Ensures candle stays above the cake */
+}
+
+/* Flame */
+.flame {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 25px;
+  background: radial-gradient(circle at 50% 30%, #ffec85, #ff9a00, transparent 70%);
+  border-radius: 50% 50% 50% 50%;
+  animation: flicker 0.15s infinite alternate;
+}
+
+/* Flicker animation */
+@keyframes flicker { from { transform: translateX(-50%) scale(1);} to { transform: translateX(-50%) scale(1.2);} }
+
+  /* Floating balloons */
+  .balloon {
+    position: absolute;
+    bottom: -100px;
+    width: 50px;
+    height: 70px;
+    background: red;
+    border-radius: 50% 50% 50% 50%;
+    animation: floatUp 8s infinite ease-in;
+    z-index: 0;
+  }
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    width: 2px;
+    height: 30px;
+    background: #555;
+    transform: translateX(-50%);
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0);}
+    100% { transform: translateY(-120vh);}
+  }
+
+  /* Confetti */
+  .confetti {
+    position: absolute;
+    width: 8px;
+    height: 15px;
+    background: yellow;
+    top: -20px;
+    animation: fall 4s infinite;
+  }
+  @keyframes fall {
+    to {
+      transform: translateY(120vh) rotate(360deg);
+    }
+  }
+
+  .title {
+    position: absolute;
+    top: 10%;
+    font-size: 2.5rem;
+    color: #fff;
+    text-shadow: 0 0 15px #ff69b4;
+    display: none;
+    z-index: 3;
+  }
+
+  /* ✨ Marquee / Magic Text */
+  #marqueeText {
+    position: absolute;
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #ffeb3b;
+    text-shadow: 0 0 15px #ff4081, 0 0 30px #ff4081;
+    animation: floatText 3s infinite ease-in-out;
+    z-index: 3;
+  }
+  @keyframes floatText {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+
+  /* 🎁 "Something more for you" Button */
+  #moreBtn {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 32px;
+    font-size: 1.3rem;
+    background: linear-gradient(45deg, hotpink, gold);
+    border: none;
+    border-radius: 30px;
+    color: #fff;
+    box-shadow: 0 0 20px hotpink;
+    cursor: pointer;
+    opacity: 0; 
+    pointer-events: none;
+    transition: opacity 1.5s ease;
+    z-index: 15;
+  }
+  #moreBtn.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+ 
+
+ /* 📱 Tablet */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+    top: 8%;
+  }
+
+  .cake {
+    width: 150px;
+    height: 100px;
+  }
+
+  .candle {
+    height: 50px;
+    width: 12px;
+    top: -50px;
+  }
+
+  .flame {
+    width: 12px;
+    height: 20px;
+    top: -20px;
+  }
+
+  #marqueeText {
+    font-size: 1.4rem;
+    top: 20%;
+  }
+
+  #lightBtn {
+    font-size: 1rem;
+    padding: 12px 25px;
+  }
+
+  #moreBtn {
+    font-size: 1rem;
+    padding: 12px 25px;
+  }
+}
+
+/* 📱 Mobile phones */
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+    top: 6%;
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  .cake {
+    width: 120px;
+    height: 80px;
+  }
+
+  .candle {
+    height: 40px;
+    width: 10px;
+    top: -40px;
+  }
+
+  .flame {
+    width: 10px;
+    height: 18px;
+    top: -18px;
+  }
+
+  #marqueeText {
+    font-size: 1.1rem;
+    top: 18%;
+    padding: 0 10px;
+  }
+
+  #lightBtn {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  #moreBtn {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  .balloon {
+    width: 35px;
+    height: 50px;
+  }
+}
+
+
+</style>
+</head>
+<body>
+  <audio id="birthdaySong" src="songs\happy-birthday-314197.mp3" loop></audio>
+
+
+<div id="overlay">
+  <button id="lightBtn">Light it Up ✨</button>
+</div>
+
+<div class="fairy-lights" id="lights"></div>
+
+<h1 class="title" id="title">🎉 Happy Birthday Princess ❤️ 🎉</h1>
+
+<div class="cake" id="cake">
+  <div class="candle">
+    <div class="flame" id="flame"></div>
+    
+  </div>
+</div>
+ <!-- Magic marquee text -->
+  <div id="marqueeText">✨ Click the Candle ✨</div>
+
+  <!-- existing content -->
+
+  <!-- New hidden button -->
+  <button id="moreBtn" onclick="window.location.href='ending.html'">Something more for you 💝</button>
+
+<script>
+  const overlay = document.getElementById('overlay');
+  const lightBtn = document.getElementById('lightBtn');
+  const cake = document.getElementById('cake');
+  const title = document.getElementById('title');
+  const lights = document.getElementById('lights');
+  const flame = document.getElementById('flame');
+  const nextBtn = document.getElementById('nextBtn');
+
+  lightBtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    cake.style.display = 'block';
+    title.style.display = 'block';
+
+    // Add fairy lights
+    for(let i=0;i<20;i++){
+      let bulb = document.createElement('span');
+      lights.appendChild(bulb);
+    }
+
+
+    // Balloons
+    for(let i=0;i<10;i++){
+      let balloon = document.createElement('div');
+      balloon.className = 'balloon';
+      balloon.style.left = Math.random()*100 + "vw";
+      balloon.style.background = `hsl(${Math.random()*360},70%,60%)`;
+      balloon.style.animationDuration = (6 + Math.random()*4) + "s";
+      document.body.appendChild(balloon);
+    }
+
+    // Confetti
+    for(let i=0;i<30;i++){
+      let conf = document.createElement('div');
+      conf.className = 'confetti';
+      conf.style.left = Math.random()*100 + "vw";
+      conf.style.background = `hsl(${Math.random()*360},70%,60%)`;
+      conf.style.animationDuration = (2 + Math.random()*3) + "s";
+      document.body.appendChild(conf);
+    }
+
+    const song = document.getElementById("birthdaySong");
+song.volume = 0;   // start silent
+song.play();
+
+// Smooth fade-in
+let fade = setInterval(() => {
+  if (song.volume < 1.0) {
+    song.volume = Math.min(song.volume + 0.02, 1); 
+  } else {
+    clearInterval(fade);
+  }
+}, 200);
+  });
+
+  const marqueeText = document.getElementById("marqueeText");
+  const moreBtn = document.getElementById("moreBtn");
+
+  // 🎂 When flame/candle is clicked
+  cake.addEventListener("click", () => {
+    flame.style.opacity = "0"; // fade flame
+    marqueeText.style.display = "none"; // remove marquee text
+
+    // Confetti celebration 🎊
+    for(let i=0;i<50;i++){
+      let conf = document.createElement("div");
+      conf.className = "confetti";
+      conf.style.left = Math.random()*100 + "vw";
+      conf.style.background = `hsl(${Math.random()*360},70%,60%)`;
+      conf.style.animationDuration = (2 + Math.random()*3) + "s";
+      document.body.appendChild(conf);
+    }
+
+    // Balloons 🎈
+    for(let i=0;i<15;i++){
+      let balloon = document.createElement("div");
+      balloon.className = "balloon";
+      balloon.style.left = Math.random()*100 + "vw";
+      balloon.style.background = `hsl(${Math.random()*360},70%,60%)`;
+      balloon.style.animationDuration = (6 + Math.random()*4) + "s";
+      document.body.appendChild(balloon);
+    }
+
+    // 🎁 Show "Something more for you" button
+    setTimeout(() => {
+      moreBtn.classList.add("show");
+    }, 2000);
+  });
+
+  
+
+</script>
+
+</body>
+</html>
