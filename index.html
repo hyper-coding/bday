@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday My Love</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fa579e, #db519f);
+      color: #333;
+      overflow-x: hidden;
+    }
+    .card {
+      background-color: rgba(255, 255, 255, 0.6);
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 600px;
+      margin: 60px auto;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .card h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5rem;
+      color: #d63384;
+    }
+    .card p {
+      font-size: 1.1rem;
+      margin: 10px 0;
+    }
+    .surprise-btn {
+      margin-top: 30px;
+      padding: 15px 30px;
+      background: linear-gradient(90deg, #e2589d, #4d97ff);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+    .surprise-btn:hover {
+      transform: scale(1.05);
+    }
+    .music-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      padding: 10px;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .music-icon img {
+      width: 24px;
+      height: 24px;
+    }
+
+    @media (max-width: 768px) {
+  .card {
+    margin: 40px 20px;
+    padding: 25px;
+  }
+  .card h1 {
+    font-size: 2rem;
+  }
+  .card p {
+    font-size: 1rem;
+  }
+  .surprise-btn {
+    padding: 12px 25px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    margin: 20px 15px;
+    padding: 20px;
+  }
+  .card h1 {
+    font-size: 1.8rem;
+  }
+  .card p {
+    font-size: 0.95rem;
+  }
+  .surprise-btn {
+    padding: 10px 20px;
+    font-size: 0.85rem;
+  }
+}
+  </style>
+</head>
+<body>
+
+
+  <div class="card">
+    <h1>Happy Birthday My Love! 💖</h1>
+    <p>To the most amazing woman in my life</p>
+    <p><em>"Every moment with you is a gift, and today we celebrate the greatest gift of all – YOU! 🎁"</em></p>
+    <button class="surprise-btn" onclick="startSurprise()">Begin Your Surprise! 💝</button>
+
+  </div>
+
+  <div class="music-icon">
+    <img src="E:\birthday\images\music2.png" alt="Music Note" />
+  </div>
+
+  <script>
+  function startSurprise() {
+    // Simple redirect to the memories page with a small delay (optional)
+    setTimeout(() => {
+      window.location.href = 'memories.html';
+    }, 500); // adjust delay if needed, or set to 0 for instant redirect
+  }
+</script>
+
+
+
+</body>
+</html>
